@@ -1,3 +1,5 @@
+#include <threads.h>
+
 #include "game.h"
 
 #define GAME_SIZE 8
