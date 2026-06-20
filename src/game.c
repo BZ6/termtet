@@ -39,27 +39,31 @@ void handler(int key)
 	{
 		case 27:
 			// конец игры
-			printf("конец игры\n");
+			printf("game over\n");
+			break;
+		case 'w':
+			// вращение по часовой стрелке
+			printf("rotate clockwise\n");
 			break;
 		case 'a':
 			// перемещение влево
-			printf("перемещение влево\n");
+			printf("move left\n");
 			break;
 		case 'd':
 			// перемещение право
-			printf("перемещение право\n");
+			printf("move right\n");
 			break;
 		case 's':
 			// перемещение вниз
-			printf("перемещение вниз\n");
+			printf("move down\n");
 			break;
 		case 'p':
 			// пауза
-			printf("пауза\n");
+			printf("pause\n");
 			break;
 		default:
 			// ничего не происходит
-			printf("ничего\n");
+			printf("nothing\n");
 			break;
 	}
 }
