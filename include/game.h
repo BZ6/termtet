@@ -12,13 +12,13 @@ typedef enum {
 } GameStatus;
 
 typedef enum {
-	MSG_STOP = 0,
-	MSG_PAUSE,
+	MSG_PAUSE = 0,
+	MSG_UNDEFINED,
+	MSG_STOP,
 	MSG_ROTATE,
 	MSG_LEFT,
 	MSG_RIGHT,
-	MSG_DOWN,
-	MSG_UNDEFINED
+	MSG_DOWN
 } ThreadMessage;
 
 typedef struct {
@@ -36,7 +36,7 @@ void end_game(Game *game);
 
 /* Функция обработки вводимого символа
  */
-void handler(int key);
+void input_handler(int key);
 
 /* Функция игры
  */

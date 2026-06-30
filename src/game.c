@@ -10,8 +10,9 @@ mtx_t mtx;
 /* Объявление внутренних функций */
 int game_logic(void *arg);
 int game_input(void *arg);
-void write_message(mtx_t *mtx, ThreadMessage message);
+void write_message(mtx_t *mtx, ThreadMessage msg);
 ThreadMessage read_message(mtx_t *mtx);
+void message_handler(ThreadMessage msg);
 
 
 /* Функция запуска игры
@@ -40,40 +41,38 @@ void end_game(Game *game)
 	game->status = GAME_STOP;
 }
 
-
 /* Функция обработки вводимого символа
  */
-void handler(int key)
+void input_handler(int key)
 {
 	switch (key)
 	{
 		case 27:
 			// конец игры
-			printf("game over\n");
+			write_message(&mtx, MSG_STOP);
 			break;
 		case 'w':
 			// вращение по часовой стрелке
-			printf("rotate clockwise\n");
+			write_message(&mtx, MSG_ROTATE);
 			break;
 		case 'a':
 			// перемещение влево
-			printf("move left\n");
+			write_message(&mtx, MSG_LEFT);
 			break;
 		case 'd':
 			// перемещение право
-			printf("move right\n");
+			write_message(&mtx, MSG_RIGHT);
 			break;
 		case 's':
 			// перемещение вниз
-			printf("move down\n");
+			write_message(&mtx, MSG_DOWN);
 			break;
 		case 'p':
 			// пауза
-			printf("pause\n");
+			write_message(&mtx, MSG_PAUSE);
 			break;
 		default:
 			// ничего не происходит
-			printf("nothing\n");
 			break;
 	}
 }
@@ -83,7 +82,12 @@ void handler(int key)
 void run_game(void)
 {
 	thrd_t game_input_thread, game_logic_thread;
-	ThreadMessage message = MSG_UNDEFINED;
+	message = MSG_UNDEFINED;
+
+	if (mtx_init(&mtx, mtx_plain) != thrd_success) {
+		printf("Failed to init mutex.\n");
+		return;
+	}
 
 	if (thrd_create(&game_input_thread, game_input, NULL) != thrd_success)
 	{
@@ -98,6 +102,8 @@ void run_game(void)
 
 	thrd_join(game_input_thread, NULL);
 	thrd_join(game_logic_thread, NULL);
+
+	mtx_destroy(&mtx);
 }
 
 /* Определения внутренних функций */
@@ -105,8 +111,19 @@ void run_game(void)
 int game_logic(void *arg)
 {
 	Game game;
+	int msg;
+	int is_running = 1;
 
 	game = start_game();
+
+	while (is_running)
+	{
+		msg = read_message(&mtx);
+		message_handler(msg);
+		if (msg == MSG_STOP) {
+			is_running = 0;
+		}
+	}
 
 	end_game(&game);
 
@@ -116,13 +133,13 @@ int game_logic(void *arg)
 
 int game_input(void *arg)
 {
-	int is_running = 1;
 	int key;
+	int is_running = 1;
 
 	while (is_running)
 	{
 		key = get_key();
-		handler(key);
+		input_handler(key);
 		if (key == 27) {
 			is_running = 0;
 		}
@@ -145,7 +162,43 @@ ThreadMessage read_message(mtx_t *mtx)
 
 	mtx_lock(mtx);
 	msg = message;
+	message = MSG_UNDEFINED;
 	mtx_unlock(mtx);
 
 	return msg;
+}
+
+void message_handler(ThreadMessage msg)
+{
+	switch (msg)
+	{
+		case MSG_STOP:
+			// конец игры
+			printf("game over\n");
+			break;
+		case MSG_ROTATE:
+			// вращение по часовой стрелке
+			printf("rotate clockwise\n");
+			break;
+		case MSG_LEFT:
+			// перемещение влево
+			printf("move left\n");
+			break;
+		case MSG_RIGHT:
+			// перемещение право
+			printf("move right\n");
+			break;
+		case MSG_DOWN:
+			// перемещение вниз
+			printf("move down\n");
+			break;
+		case MSG_PAUSE:
+			// пауза
+			printf("pause\n");
+			break;
+		default:
+			// ничего не происходит
+			//printf("nothing\n");
+			break;
+	}
 }
