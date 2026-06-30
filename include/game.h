@@ -6,10 +6,20 @@
 #include "grid.h"
 
 typedef enum {
-	STOP = 0,
-	PAUSE,
-	RUNNING
+	GAME_STOP = 0,
+	GAME_PAUSE,
+	GAME_RUNNING
 } GameStatus;
+
+typedef enum {
+	MSG_STOP = 0,
+	MSG_PAUSE,
+	MSG_ROTATE,
+	MSG_LEFT,
+	MSG_RIGHT,
+	MSG_DOWN,
+	MSG_UNDEFINED
+} ThreadMessage;
 
 typedef struct {
 	Grid grid;
