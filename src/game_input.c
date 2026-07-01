@@ -3,6 +3,13 @@
 
 #include "game_input.h"
 
+#define KEY_ESC 27
+#define KEY_W 'w'
+#define KEY_A 'a'
+#define KEY_D 'd'
+#define KEY_S 's'
+#define KEY_P 'p'
+
 /***
  * Объявления внутренних функций
  ***/
@@ -45,27 +52,27 @@ void input_handler(int key)
 {
 	switch (key)
 	{
-		case 27:
+		case KEY_ESC:
 			// конец игры
 			write_message(&mtx, MSG_STOP);
 			break;
-		case 'w':
+		case KEY_W:
 			// вращение по часовой стрелке
 			write_message(&mtx, MSG_ROTATE);
 			break;
-		case 'a':
+		case KEY_A:
 			// перемещение влево
 			write_message(&mtx, MSG_LEFT);
 			break;
-		case 'd':
+		case KEY_D:
 			// перемещение право
 			write_message(&mtx, MSG_RIGHT);
 			break;
-		case 's':
+		case KEY_S:
 			// перемещение вниз
 			write_message(&mtx, MSG_DOWN);
 			break;
-		case 'p':
+		case KEY_P:
 			// пауза
 			write_message(&mtx, MSG_PAUSE);
 			break;
