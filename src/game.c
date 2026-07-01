@@ -10,9 +10,9 @@
  */
 void end_game(Game *game);
 
-/* Функция запуска процесса игры
+/* Функция запуска игры
  */
-void run_game(void);
+Game start_game(void);
 
 /***
  * Определения внешних функций

@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "game_threads.h"
 
 ThreadMessage message;

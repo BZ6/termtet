@@ -16,8 +16,8 @@ typedef struct {
 	GameStatus status;
 } Game;
 
-/* Функция запуска игры
+/* Функция запуска процесса игры
  */
-Game start_game(void);
+void run_game(void);
 
 #endif // __GAME_H__
