@@ -2,8 +2,6 @@
 #define __GRID_H__
 
 
-#include "debug.h"
-
 typedef struct {
 	int *grid; // неотрицательные значения
 	int n;

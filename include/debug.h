@@ -2,8 +2,6 @@
 #define __DEBUG_H__
 
 
-#include <stdio.h>
-
 //#define DBG_MODE
 
 #ifdef DBG_MODE

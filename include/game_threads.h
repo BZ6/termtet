@@ -4,8 +4,6 @@
 
 #include <threads.h>
 
-#include "io.h"
-
 typedef enum {
 	MSG_PAUSE = 0,
 	MSG_UNDEFINED,
@@ -22,12 +20,12 @@ extern mtx_t mtx;
  */
 void init_message(void);
 
-/* Функция-поток логики игры
+/* Функция для записи сообщения между потоками
  */
-int game_logic(void *arg);
+void write_message(mtx_t *mtx, ThreadMessage msg);
 
-/* Функция-поток обработки ввода
+/* Функция для чтения сообщения между потоками
  */
-int game_input(void *arg);
+ThreadMessage read_message(mtx_t *mtx);
 
 #endif // __GAME_THREADS_H__

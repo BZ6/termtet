@@ -1,6 +1,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "debug.h"
+
 #include "grid.h"
 
 /* Функция создания сетки

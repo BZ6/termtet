@@ -1,3 +1,7 @@
+#include "game_threads.h"
+#include "game_input.h"
+#include "game_logic.h"
+
 #include "game.h"
 
 #define GAME_SIZE 8

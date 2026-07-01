@@ -3,7 +3,6 @@
 
 
 #include "grid.h"
-#include "game_threads.h"
 
 typedef enum {
 	GAME_STOP = 0,
