@@ -1,8 +1,22 @@
 #include <stdio.h>
 
+#include "grid.h"
 #include "game_threads.h"
 
 #include "game_logic.h"
+
+#define GAME_SIZE 8
+
+typedef enum {
+	GAME_STOP = 0,
+	GAME_PAUSE,
+	GAME_RUNNING
+} GameStatus;
+
+typedef struct {
+	Grid grid;
+	GameStatus status;
+} Game;
 
 // TODO: сейчас тут не логика игры а логика треда игры, надо сделать к примеру передачу всех коллбеков из модуля game
 // нужного для игры или создать еще отдельный файл где будет реальная логика игры.
@@ -19,6 +33,14 @@
  */
 void message_handler(ThreadMessage msg);
 
+/* Функция окончания игры
+ */
+void end_game(Game *game);
+
+/* Функция запуска игры
+ */
+Game start_game(void);
+
 /***
  * Определения внешних функций
  ***/
@@ -27,11 +49,11 @@ void message_handler(ThreadMessage msg);
  */
 int game_logic(void *arg)
 {
-	//Game game;
+	Game game;
 	int msg;
 	int is_running = 1;
 
-	//game = start_game();
+	game = start_game();
 
 	while (is_running)
 	{
@@ -42,7 +64,7 @@ int game_logic(void *arg)
 		}
 	}
 
-	//end_game(&game);
+	end_game(&game);
 
 	printf("thread game_logic end\n");
 	return 0;
@@ -87,4 +109,30 @@ void message_handler(ThreadMessage msg)
 			//printf("nothing\n");
 			break;
 	}
+}
+
+/* Функция запуска игры
+ */
+Game start_game(void)
+{
+	Grid grid = create_grid(GAME_SIZE, GAME_SIZE);
+
+	if (!grid.is_success) return (Game)
+		{
+			.grid = grid,
+			.status = GAME_STOP
+		};
+	return (Game)
+	{
+		.grid = grid,
+		.status = GAME_RUNNING
+	};
+}
+
+/* Функция окончания игры
+ */
+void end_game(Game *game)
+{
+	delete_grid(&(game->grid));
+	game->status = GAME_STOP;
 }

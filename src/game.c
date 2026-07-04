@@ -4,24 +4,6 @@
 
 #include "game.h"
 
-#define GAME_SIZE 8
-
-/***
- * Объявления внутренних функций
- ***/
-
-/* Функция окончания игры
- */
-void end_game(Game *game);
-
-/* Функция запуска игры
- */
-Game start_game(void);
-
-/***
- * Определения внешних функций
- ***/
-
 /* Функция запуска процесса игры
  */
 void run_game(void)
@@ -49,34 +31,4 @@ void run_game(void)
 	thrd_join(game_logic_thread, NULL);
 
 	mtx_destroy(&mtx);
-}
-
-/***
- * Определения внутренних функций
- ***/
-
-/* Функция запуска игры
- */
-Game start_game(void)
-{
-	Grid grid = create_grid(GAME_SIZE, GAME_SIZE);
-
-	if (!grid.is_success) return (Game)
-		{
-			.grid = grid,
-			.status = GAME_STOP
-		};
-	return (Game)
-	{
-		.grid = grid,
-		.status = GAME_RUNNING
-	};
-}
-
-/* Функция окончания игры
- */
-void end_game(Game *game)
-{
-	delete_grid(&(game->grid));
-	game->status = GAME_STOP;
 }
