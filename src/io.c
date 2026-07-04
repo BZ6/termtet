@@ -1,14 +1,15 @@
-#include "io.h"
-
 #if defined(_WIN32) || defined(_WIN64)
 	#include <conio.h>
 #elif defined(__unix__) || defined(__APPLE__)
 	#include <termios.h>
 	#include <unistd.h>
+	#include <stdlib.h>
+	#include <stdio.h>
 #else
 	#include <stdio.h>
 #endif
 
+#include "io.h"
 
 #if defined(_WIN32) || defined(_WIN64) // Проверяем, запущена ли программа на Windows
 /* Функция получения нажатой клавиши клавиатуры
@@ -51,5 +52,6 @@ int get_key(void)
  */
 void display(char *str)
 {
-	
+	system("clear");
+	printf("%s\n", str);
 }
