@@ -33,7 +33,7 @@ typedef struct {
 
 /* Функция обработки сообщения между потоками
  */
-void message_handler(ThreadMessage msg);
+void message_handler(ThreadMessage msg, Game *game);
 
 /* Функция окончания игры
  */
@@ -42,6 +42,10 @@ void end_game(Game *game);
 /* Функция запуска игры
  */
 Game start_game(void);
+
+/* Функция засыпания потока
+ */
+void sleep(void);
 
 /* Функция двжения блока вниз
  */
@@ -58,27 +62,24 @@ int game_logic(void *arg)
 	Game game;
 	char *str;
 	int msg;
-	int is_running = 1;
 
 	game = start_game();
 
-	while (is_running)
+	while (game.status != GAME_STOP)
 	{
+
+		msg = read_message(&mtx);
+		message_handler(msg, &game);
+
+		if (game.status == GAME_PAUSE)
+		{
+			continue;
+		}
+
 		str = str_grid(game.grid);
 		display(str);
 
-		msg = read_message(&mtx);
-		message_handler(msg);
-		if (msg == MSG_STOP) {
-			is_running = 0;
-		}
-
-		// sleep
-		struct timespec delay = {
-			.tv_sec = 0,
-			.tv_nsec = 100 * 1000
-		};
-		thrd_sleep(&delay, NULL);
+		sleep();
 	}
 
 	end_game(&game);
@@ -93,13 +94,14 @@ int game_logic(void *arg)
 
 /* Функция обработки сообщения между потоками
  */
-void message_handler(ThreadMessage msg)
+void message_handler(ThreadMessage msg, Game *game)
 {
 	switch (msg)
 	{
 		case MSG_STOP:
 			// конец игры
 			printf("game over\n");
+			game->status = GAME_STOP;
 			break;
 		case MSG_ROTATE:
 			// вращение по часовой стрелке
@@ -120,6 +122,7 @@ void message_handler(ThreadMessage msg)
 		case MSG_PAUSE:
 			// пауза
 			printf("pause\n");
+			game->status = game->status == GAME_RUNNING ? GAME_PAUSE : GAME_RUNNING;
 			break;
 		default:
 			// ничего не происходит
@@ -152,6 +155,17 @@ void end_game(Game *game)
 {
 	delete_grid(&(game->grid));
 	game->status = GAME_STOP;
+}
+
+/* Функция засыпания потока
+ */
+void sleep(void)
+{
+	struct timespec delay = {
+		.tv_sec = 0,
+		.tv_nsec = 100 * 1000
+	};
+	thrd_sleep(&delay, NULL);
 }
 
 /* Функция двжения блока вниз
