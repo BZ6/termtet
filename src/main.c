@@ -1,35 +1,35 @@
-#include <stdlib.h>
-#include <stdio.h>
+//#include <stdlib.h>
+//#include <stdio.h>
 
 #include "main.h"
 
-#define MAX_SIZE 8
+//#define MAX_SIZE 8
 
 void main(void)
 {
-	int n = MAX_SIZE, m = MAX_SIZE;
-	Grid grid;
-	char *str;
+	//int n = MAX_SIZE, m = MAX_SIZE;
+	//Grid grid;
+	//char *str;
 
-	grid = create_grid(n, m);
-	if (!grid.is_success) return;
+	//grid = create_grid(n, m);
+	//if (!grid.is_success) return;
 
-	printf("Init finished\n");
+	//printf("Init finished\n");
 
-	str = str_grid(grid);
-	delete_grid(&grid);
-	if (!str) return;
+	//str = str_grid(grid);
+	//delete_grid(&grid);
+	//if (!str) return;
 
-	printf("Convert grid in string finished\n");
+	//printf("Convert grid in string finished\n");
 
-	display(str);
-	display(str);
-	if (str)
-	{
-		free(str);
-		str = NULL;
-	}
-	printf("Convert grid in string finished\n");
+	//display(str);
+	//display(str);
+	//if (str)
+	//{
+	//	free(str);
+	//	str = NULL;
+	//}
+	//printf("Convert grid in string finished\n");
 
 	//int is_running = 1;
 	//int key;
@@ -43,5 +43,5 @@ void main(void)
 	//	}
 	//}
 
-	//run_game();
+	run_game();
 }

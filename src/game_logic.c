@@ -1,6 +1,8 @@
 #include <stdio.h>
+#include <time.h> // для sleep
 
 #include "grid.h"
+#include "io.h"
 #include "game_threads.h"
 
 #include "game_logic.h"
@@ -41,6 +43,10 @@ void end_game(Game *game);
  */
 Game start_game(void);
 
+/* Функция двжения блока вниз
+ */
+//Grid brick_move_down(Grid grid);
+
 /***
  * Определения внешних функций
  ***/
@@ -50,6 +56,7 @@ Game start_game(void);
 int game_logic(void *arg)
 {
 	Game game;
+	char *str;
 	int msg;
 	int is_running = 1;
 
@@ -57,11 +64,21 @@ int game_logic(void *arg)
 
 	while (is_running)
 	{
+		str = str_grid(game.grid);
+		display(str);
+
 		msg = read_message(&mtx);
 		message_handler(msg);
 		if (msg == MSG_STOP) {
 			is_running = 0;
 		}
+
+		// sleep
+		struct timespec delay = {
+			.tv_sec = 0,
+			.tv_nsec = 100 * 1000
+		};
+		thrd_sleep(&delay, NULL);
 	}
 
 	end_game(&game);
@@ -136,3 +153,10 @@ void end_game(Game *game)
 	delete_grid(&(game->grid));
 	game->status = GAME_STOP;
 }
+
+/* Функция двжения блока вниз
+ */
+//Grid brick_move_down(Grid grid)
+//{
+
+//}
