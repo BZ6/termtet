@@ -14,6 +14,6 @@ include_directories(${INCLUDE})
 find_package(Threads REQUIRED)
 
 add_executable(hello ${srcs})
-target_compile_options(hello PRIVATE /std:c11)
+#target_compile_options(hello PRIVATE /std:c11)
 
 target_link_libraries(hello Threads::Threads)

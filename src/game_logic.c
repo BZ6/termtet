@@ -1,24 +1,13 @@
 #include <stdio.h>
 #include <time.h> // для sleep
 
-#include "grid.h"
 #include "io.h"
 #include "game_threads.h"
+#include "game_struct.h"
 
 #include "game_logic.h"
 
 #define GAME_SIZE 8
-
-typedef enum {
-	GAME_STOP = 0,
-	GAME_PAUSE,
-	GAME_RUNNING
-} GameStatus;
-
-typedef struct {
-	Grid grid;
-	GameStatus status;
-} Game;
 
 // TODO: сейчас тут не логика игры а логика треда игры, надо сделать к примеру передачу всех коллбеков из модуля game
 // нужного для игры или создать еще отдельный файл где будет реальная логика игры.
